@@ -14,7 +14,7 @@ import java.sql.ResultSet;
  */
 public class DataBaseUtil {
 	String url="jdbc:oracle:thin:@172.16.4.100:1521:orcl";
-//	String url="jdbc:oracle:thin:@localhost:1521:orcl";
+	//String url="jdbc:oracle:thin:@localhost:1521:orcl";
 	String urlMysql="jdbc:mysql://pcshao.cn:9910/zxcs?useSSL=false&autoReconnect=true&characterEncoding=UTF-8";
 	private static String user = "zxcsadmin";
 	private static String password = "123";
