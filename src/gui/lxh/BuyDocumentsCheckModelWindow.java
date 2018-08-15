@@ -42,8 +42,8 @@ public class BuyDocumentsCheckModelWindow extends JDialog{
 	JPanel jp_tab_p1,jp_tab_p2,jp_tab_p3;
 	JPanel jp_tab_p1_1,jp_tab_p1_2,jp_tab_p2_1,jp_tab_p2_2;	//中部放了两个面板
 	JTabbedPane tabbed_center;
-	JButton btn_top1,btn_top2,btn_top3,btn_top4,btn_top5,btn_top6,btn_top7 ,btn_top8;
-	JTextField tf_name,tf_check,tf_order;
+	JButton btn_top1,btn_top2,btn_top3,btn_top4,btn_top5,btn_top6,btn_select;
+	JTextField tf_name,tf_check;
 	Vector columnNames1,columnNames2,columnNames3,columnNames4,columnNames5;
 	DefaultTableModel table1model,table2model,table3model,table4model,table5model;
 	JTable table1,table2,table3,table4,table5;
@@ -71,8 +71,7 @@ public class BuyDocumentsCheckModelWindow extends JDialog{
 		btn_top4=new JButton(" 导    出 ");
 		btn_top5=new JButton(" 打    印 ");
 		btn_top6=new JButton(" 退    出 ");
-		btn_top7=new JButton(" 查    询 ");
-		btn_top8=new JButton(" 查    询 ");
+		btn_select=new JButton(" 查    询 ");
 		tf_name=new JTextField(10);
 		tf_check=new JTextField(10);
 		tf_order=new JTextField(15);
@@ -100,10 +99,9 @@ public class BuyDocumentsCheckModelWindow extends JDialog{
 		tf_check.setText(date2.getStrDate());
 		date2.register(tf_check);
 		jp_top_p2.add(tf_check);
-		jp_top_p2.add(btn_top7);
+		jp_top_p2.add(btn_select);
 		jp_top_p2.add(new JLabel("按供货商/单据号查询："));
 		jp_top_p2.add(tf_order);
-		jp_top_p2.add(btn_top8);
 		jp_top.add(jp_top_p2);
 		/**
 		 * 中部
@@ -138,7 +136,7 @@ public class BuyDocumentsCheckModelWindow extends JDialog{
 		for (String str:arr5) {
 			columnNames5.add(str);
 		}
-		table1model=new DefaultTableModel(in_order_dao.getAllInorder(),columnNames1);
+		table1model=new DefaultTableModel(in_order_dao.getAllInorder(""),columnNames1);
 		table1=new JTable(table1model){														//设置表格不可以编辑
 			public boolean isCellEditable(int row, int column) {
 				return false;
@@ -150,7 +148,7 @@ public class BuyDocumentsCheckModelWindow extends JDialog{
 				return false;
 			}
 		};
-		table3model=new DefaultTableModel(in_order_dao.getAlwaysInorder(),columnNames3);
+		table3model=new DefaultTableModel(in_order_dao.getAlwaysInorder1(""),columnNames3);
 		table3=new JTable(table3model){														//设置表格不可以编辑
 			public boolean isCellEditable(int row, int column) {
 				return false;
@@ -162,7 +160,7 @@ public class BuyDocumentsCheckModelWindow extends JDialog{
 				return false;
 			}
 		};
-		table5model=new DefaultTableModel(in_order_dao.getGoodsInorderInfo(),columnNames5);
+		table5model=new DefaultTableModel(in_order_dao.getGoodsInorderInfo(""),columnNames5);
 		table5=new JTable(table5model){														//设置表格不可以编辑
 			public boolean isCellEditable(int row, int column) {
 				return false;
@@ -209,16 +207,30 @@ public class BuyDocumentsCheckModelWindow extends JDialog{
 		/**
 		 * 日期查询事件
 		 */
-		btn_top7.addActionListener(new ActionListener() {
+		btn_select.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			String date1=tf_name.getText()+"";
 			String date2=tf_check.getText()+"";
-				
+			if(table1.isShowing()) {
+				table1model=new DefaultTableModel(in_order_dao.getAllInorder(date1,date2),columnNames1);
+				table1.setModel(table1model);
+				table1.updateUI();
+			}else if(table3.isShowing()) {
+				table3model=new DefaultTableModel(in_order_dao.getAlwaysInorder(date1,date2),columnNames3);
+				table3.setModel(table3model);
+				table3.updateUI();
+			}else if(table5.isShowing()) {
+				table5model=new DefaultTableModel(in_order_dao.getGoodsInorderInfo(date1,date2),columnNames5);
+				table5.setModel(table5model);
+				table5.updateUI();
+			}
 			}
 		});
+		
 		this.setModal(true);
 		this.setVisible(true);
 	}
+	
 	/***
 	 * 
 	 * 表格1的点击事件
@@ -270,7 +282,7 @@ public class BuyDocumentsCheckModelWindow extends JDialog{
 		Vector vector=null;
 		if(table1.isShowing()){
 			try{
-				 vector=(Vector)in_order_dao.getAllInorder().get(table1.getSelectedRow());		 
+				 vector=(Vector)in_order_dao.getAllInorder("").get(table1.getSelectedRow());		 
 			}catch (Exception e2) {
 				
 			}
@@ -285,7 +297,7 @@ public class BuyDocumentsCheckModelWindow extends JDialog{
 		Vector vector=null;
 		if(table3.isShowing()){
 			try{
-				 vector=(Vector)in_order_dao.getAlwaysInorder().get(table3.getSelectedRow());		 
+				 vector=(Vector)in_order_dao.getAlwaysInorder1("").get(table3.getSelectedRow());		 
 			}catch (Exception e2) {
 				
 			}
@@ -301,9 +313,11 @@ public class BuyDocumentsCheckModelWindow extends JDialog{
 		table.updateUI();
 	}
 	/**
-	 * 重写文本变化事件
+	 * 查找供货商/订单号文本变化事件
 	 * @param args
 	 */
+	
+	
 	public static void main(String[] args) {
 		new BuyDocumentsCheckModelWindow();
 	}
