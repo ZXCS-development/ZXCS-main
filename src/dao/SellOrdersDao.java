@@ -14,7 +14,7 @@ import util.CastUtil;
 import util.DataBaseUtil;
 
 /**
- * ycÁ÷±×
+ * yc
  */
 public class SellOrdersDao {
 	DataBaseUtil du;
