@@ -8,19 +8,14 @@ import java.sql.Statement;
 import java.sql.ResultSet;
 
 /**
- * Êı¾İ¿â¹¤¾ßÀà Ìá¹©Á½¸ö·½·¨£º
- * 	1¡¢getConnection() 		·µ»ØÁ¬½Ó¶ÔÏó
- * 	2¡¢closeConnection(...) 	¹Ø±ÕÊı¾İ¿âÁ¬½Ó¶ÔÏó
+ * æ•°æ®åº“å·¥å…·ç±» æä¾›ä¸¤ä¸ªæ–¹æ³•ï¼š
+ * 	1ã€getConnection() 		è¿”å›è¿æ¥å¯¹è±¡
+ * 	2ã€closeConnection(...) 	å…³é—­æ•°æ®åº“è¿æ¥å¯¹è±¡
  */
 public class DataBaseUtil {
-<<<<<<< HEAD
-	//String url="jdbc:oracle:thin:@172.16.4.100:1521:orcl";
-	//String url="jdbc:oracle:thin:@localhost:1521:orcl";
-	String url="jdbc:oracle:thin:@192.168.123.207:1521:orcl";
-=======
+  //String url="jdbc:oracle:thin:@localhost:1521:orcl";
+	//String url="jdbc:oracle:thin:@192.168.123.207:1521:orcl";
 	String url="jdbc:oracle:thin:@172.16.4.100:1521:orcl";
-	//String url="jdbc:oracle:thin:@localhost:1521:orcl";
->>>>>>> b7bc8bba0ec43c5bd06df71d8bc89bb1c4a39359
 	String urlMysql="jdbc:mysql://pcshao.cn:9910/zxcs?useSSL=false&autoReconnect=true&characterEncoding=UTF-8";
 	private static String user = "zxcsadmin";
 	private static String password = "123";
@@ -37,7 +32,7 @@ public class DataBaseUtil {
 	public static void main(String[] args) {
 		System.out.println(new DataBaseUtil().getConnection());
 	}
-	//»ñµÃÁ¬½Ó¶ÔÏó
+	//è·å¾—è¿æ¥å¯¹è±¡
 	public Connection getConnection(){
 		try{
 			return DriverManager.getConnection(url, user, password);
@@ -46,7 +41,7 @@ public class DataBaseUtil {
 		}
 		return null;
 	}
-	//¹Ø±ÕÏà¹Ø¶ÔÏó
+	//å…³é—­ç›¸å…³å¯¹è±¡
 	public void closeConnection(Connection conn, PreparedStatement pstat){
 		closeDBObject(conn);
 		closeDBObject(pstat);
