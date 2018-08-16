@@ -7,6 +7,6 @@
 	<classpathentry kind="lib" path="lib/chart/jfreechart-1.0.13.jar"/>
 	<classpathentry kind="lib" path="lib/ojdbc6.jar"/>
 	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.43-bin.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.8.0_161"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
