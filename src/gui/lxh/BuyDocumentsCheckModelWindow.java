@@ -28,11 +28,15 @@ import javax.swing.table.DefaultTableModel;
 import dao.InOrderDao;
 
 import bean.orders.InOrder;
-
+import util.ImportExportHelp;
 import util.MyDateChooser;
 
 //销售单据查询
 public class BuyDocumentsCheckModelWindow extends JDialog{
+	/*
+	 * 定义BuyReturnGoodsModelWindow brg对象
+	 */
+	BuyReturnGoodsModelWindow brg=null;
 	/**
 	 * 定义inorder  dao
 	 */
@@ -42,19 +46,34 @@ public class BuyDocumentsCheckModelWindow extends JDialog{
 	JPanel jp_tab_p1,jp_tab_p2,jp_tab_p3;
 	JPanel jp_tab_p1_1,jp_tab_p1_2,jp_tab_p2_1,jp_tab_p2_2;	//中部放了两个面板
 	JTabbedPane tabbed_center;
-	JButton btn_top1,btn_top2,btn_top3,btn_top4,btn_top5,btn_top6,btn_select,btn_look;
+	JButton btn_big_select,btn_look_order,btn_return,btn_output,btn_stamp,btn_exit,btn_select,btn_look;
 	JTextField tf_name,tf_check,tf_order;
 	Vector columnNames1,columnNames2,columnNames3,columnNames4,columnNames5;
 	DefaultTableModel table1model,table2model,table3model,table4model,table5model;
 	JTable table1,table2,table3,table4,table5;
 	String[] arr1={"单据号","开单日期","供货商名称","仓库名称","应付金额","实付金额","经办人","操作员","支付方式","备注"};		
-	String[] arr2={"商品编号","商品名称","单位","单价","数量","总金额","库存数量","规格型号","备注"};
+	String[] arr2={"商品编号","商品名称","单价","单位","数量","总金额","库存数量","规格型号","备注","供货商"};
 	String[] arr3={"商品编号","商品名称","单价","单位","数量","总金额","库存数量","规格型号","备注"};
 	String[] arr4={"供货商名称","单据号","开单日期","商品编号","商品名称","单位","规格型号","单价","数量","总金额","仓库","经办人"};
 	String[] arr5={"供货商名称","单据号","开单日期","商品编号","商品名称","单位","规格型号","单价","数量","总金额","仓库","经办人"};
 	
 	MyDateChooser date1,date2;
-	public BuyDocumentsCheckModelWindow(){
+	
+	/**
+	 * 
+	 * 定义装table2表格的维克托，用于传到父窗口
+	 */
+	Vector<Vector> vector_boss=null;
+	
+	public BuyDocumentsCheckModelWindow(BuyReturnGoodsModelWindow brg){
+		/**
+		 * 初始化父窗口对象
+		 */
+		this.brg=brg;
+		/**
+		 * 初始化 定义装table2表格的维克托
+		 */
+		vector_boss=new Vector<Vector>();
 		/**
 		 * 初始化inoreder  dao
 		 */
@@ -65,12 +84,12 @@ public class BuyDocumentsCheckModelWindow extends JDialog{
 		jp_top=new JPanel();
 		jp_top_p1=new JPanel();
 		jp_top_p2=new JPanel();
-		btn_top1=new JButton("详细查找");
-		btn_top2=new JButton("查看单据");
-		btn_top3=new JButton("整单退货");
-		btn_top4=new JButton(" 导    出 ");
-		btn_top5=new JButton(" 打    印 ");
-		btn_top6=new JButton(" 退    出 ");
+		btn_big_select=new JButton("详细查找");
+		btn_look_order=new JButton("查看单据");
+		btn_return=new JButton("整单退货(限单据表)");
+		btn_output=new JButton(" 导    出 ");
+		btn_stamp=new JButton(" 打    印 ");
+		btn_exit=new JButton(" 退    出 ");
 		btn_select=new JButton(" 查    询 ");
 		btn_look=new JButton(" 查     看 ");
 		tf_name=new JTextField(10);
@@ -82,12 +101,12 @@ public class BuyDocumentsCheckModelWindow extends JDialog{
 		 */
 		jp_top.setLayout(new GridLayout(2,1));
 		jp_top_p1.setBorder(BorderFactory.createTitledBorder(""));
-		jp_top_p1.add(btn_top1);
-		jp_top_p1.add(btn_top2);
-		jp_top_p1.add(btn_top3);
-		jp_top_p1.add(btn_top4);
-		jp_top_p1.add(btn_top5);
-		jp_top_p1.add(btn_top6);
+		jp_top_p1.add(btn_big_select);
+		jp_top_p1.add(btn_look_order);
+		jp_top_p1.add(btn_return);
+		jp_top_p1.add(btn_output);
+		jp_top_p1.add(btn_stamp);
+		jp_top_p1.add(btn_exit);
 		jp_top_p1.add(new JLabel());
 		jp_top_p1.add(new JLabel());
 		jp_top.add(jp_top_p1);
@@ -199,6 +218,7 @@ public class BuyDocumentsCheckModelWindow extends JDialog{
 		this.add(jp_center,BorderLayout.CENTER);
 		this.setTitle("采购单据查询");	
 		this.setBounds(300, 100, 850, 550);
+		this.setLocationRelativeTo(null);
 		
 		/**
 		 * table1 的点击事件
@@ -250,6 +270,89 @@ public class BuyDocumentsCheckModelWindow extends JDialog{
 				
 			}
 		});
+		/**
+		 * 详细查找
+		 * 
+		 */
+		btn_big_select.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(null, "下面有根据单号和供货商查找！！");
+			}
+		});
+		/**
+		 * 查看单据
+		 */
+		btn_look_order.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(null, "选择单据表中的一条数据，单击左键，详细信息就会出现在对应表格的下方！");
+				
+			}
+		});
+		/**
+		 *整单退货事件
+		 */
+		btn_return.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Vector<Vector> vector_super=new Vector();
+					Vector vector_son=new Vector();
+					for(Vector v:vector_boss) {
+						vector_son.add(v.get(0));
+						vector_son.add(v.get(1));
+						vector_son.add(v.get(3));
+						vector_son.add(v.get(7));
+						vector_son.add(v.get(2));
+						vector_son.add(v.get(4));
+						vector_son.add(v.get(5));
+						vector_super.add(vector_son);	
+						BuyDocumentsCheckModelWindow.this.brg.tf_name.setText(v.get(9)+"");
+					}
+					BuyDocumentsCheckModelWindow.this.brg.data=vector_super;
+					BuyDocumentsCheckModelWindow.this.brg.tablemodel=new DefaultTableModel(BuyDocumentsCheckModelWindow.this.brg.data,BuyDocumentsCheckModelWindow.this.brg.columnNames);
+					BuyDocumentsCheckModelWindow.this.brg.table.setModel(BuyDocumentsCheckModelWindow.this.brg.tablemodel);
+					BuyDocumentsCheckModelWindow.this.brg.table.updateUI();
+					float money=0;
+					for(Object str:vector_super){
+						Vector v_money=(Vector) str;
+						money+=Float.parseFloat((v_money.get(6)+""));
+					}
+					BuyDocumentsCheckModelWindow.this.brg.tf_wantmoney.setText(money+"");
+					BuyDocumentsCheckModelWindow.this.brg.tf_paymoney.setText(money+"");
+				} catch (Exception e2) {
+					
+				}
+				if(vector_boss.isEmpty()){
+				}else{	
+					BuyDocumentsCheckModelWindow.this.setVisible(false);
+				}
+			}
+		});
+		/**
+		 * 打印事件
+		 */
+		btn_stamp.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			JOptionPane.showMessageDialog(null, "此功能需要开通会员才能使用！！！请联系lxh开通");
+			}
+		});
+		/**
+		 * 导出事件
+		 */
+		btn_output.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new ImportExportHelp();
+			}
+		});
+		
+		/**
+		 * 退出事件
+		 */
+		btn_exit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				BuyDocumentsCheckModelWindow.this.setVisible(false);
+			}
+		});
+		
 		this.setModal(true);
 		this.setVisible(true);
 	}
@@ -267,7 +370,8 @@ public class BuyDocumentsCheckModelWindow extends JDialog{
 		}
 		public void mouseClicked(MouseEvent e) {
 			if(e.getButton()==1&&isSelectTable1()!=null){
-				table2model=new DefaultTableModel(in_order_dao.getAlwaysInorder(isSelectTable1().get(0)+""),columnNames2);
+				vector_boss=in_order_dao.getAlwaysInorder(isSelectTable1().get(0)+"");
+				table2model=new DefaultTableModel(vector_boss,columnNames2);
 				table2.setModel(table2model);
 				table2.updateUI();
 			}
@@ -333,13 +437,6 @@ public class BuyDocumentsCheckModelWindow extends JDialog{
 	public void UpdateTable (JTable table,DefaultTableModel model){
 		table.setModel(model);
 		table.updateUI();
-	}
-	/**
-	 * 重写文本变化事件
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		new BuyDocumentsCheckModelWindow();
 	}
 	
 }
