@@ -13,9 +13,14 @@ import java.sql.ResultSet;
  * 	2、closeConnection(...) 	关闭数据库连接对象
  */
 public class DataBaseUtil {
+<<<<<<< HEAD
 	//String url="jdbc:oracle:thin:@172.16.4.100:1521:orcl";
 	//String url="jdbc:oracle:thin:@localhost:1521:orcl";
 	String url="jdbc:oracle:thin:@192.168.123.207:1521:orcl";
+=======
+	String url="jdbc:oracle:thin:@172.16.4.100:1521:orcl";
+	//String url="jdbc:oracle:thin:@localhost:1521:orcl";
+>>>>>>> b7bc8bba0ec43c5bd06df71d8bc89bb1c4a39359
 	String urlMysql="jdbc:mysql://pcshao.cn:9910/zxcs?useSSL=false&autoReconnect=true&characterEncoding=UTF-8";
 	private static String user = "zxcsadmin";
 	private static String password = "123";
