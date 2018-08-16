@@ -34,7 +34,7 @@ import dao.DepotsDao;
 import dao.EmployeesDao;
 import dao.OrderDao;
 import dao.PayWaysDao;
-import dao.SuppliersDao;
+
 import service.AdminService;
 import service.InService;
 import util.CastUtil;
@@ -42,7 +42,6 @@ import util.MyDateChooser;
 
 //顾客退货
 public class BuyReturnGoodsModelWindow extends JDialog{
-	SuppliersDao sdao=null;
 	OrderDao order_dao=null;													//订单dao
 	String dh=null;																//订单单号
 	DepotsDao  depots_dao=null;													//仓库dao
@@ -79,10 +78,10 @@ public class BuyReturnGoodsModelWindow extends JDialog{
 	DefaultTableModel tablemodel;
 	JTable table;
 	
-	JPanel jp_returngdcheck;														//退货查询面板
-	JPanel jp_rgc_top,jp_rgc_center;												//分为顶部和中部
+	JPanel jp_returngdcheck;					//退货查询面板
+	JPanel jp_rgc_top,jp_rgc_center;			//分为顶部和中部
 	JPanel jp_tab_p1,jp_tab_p2,jp_tab_p3;
-	JPanel jp_tab_p1_1,jp_tab_p1_2,jp_tab_p2_1,jp_tab_p2_2;							//中部放了两个面板
+	JPanel jp_tab_p1_1,jp_tab_p1_2,jp_tab_p2_1,jp_tab_p2_2;	//中部放了两个面板
 	JTabbedPane tabbed_center;
 	JButton btn_look,btn_check,btn_out,btn_tui;
 	JTextField tf_rgc_name,tf_rgc_check,tf_rgc_order;
@@ -108,7 +107,6 @@ public class BuyReturnGoodsModelWindow extends JDialog{
 		Vector v=null;
 	
 	public BuyReturnGoodsModelWindow(){
-		sdao=new SuppliersDao();
 		order_dao=new OrderDao();												//初始化订单dao
 		employees_dao=new EmployeesDao();										//初始化员工dao
 		depots_dao=new DepotsDao();												//初始化仓库dao
@@ -157,6 +155,7 @@ public class BuyReturnGoodsModelWindow extends JDialog{
 		jp_creturn_top_center.setBorder(BorderFactory.createTitledBorder(""));
 		jp_creturn_top_center.add(new JLabel("供货商："));
 		jp_creturn_top_center.add(tf_name);
+		tf_name.setText("从右边选择供货商--→");
 		tf_name.setEditable(false);
 		jp_creturn_top_center.add(btn_seek);
 		jp_creturn_top_center.add(new JLabel("出货仓库："));
@@ -377,12 +376,12 @@ public class BuyReturnGoodsModelWindow extends JDialog{
 		 */
 		btn_returnall.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new BuyDocumentsCheckModelWindow(BuyReturnGoodsModelWindow.this);
+				new BuyDocumentsCheckModelWindow();
 			}
 		});
 		/*
 		 * 确定事件
-		 * 生成退货单
+		 * 生成订单
 		 * 
 		 */
 		btn_ok.addActionListener(new ActionListener() {
@@ -396,14 +395,12 @@ public class BuyReturnGoodsModelWindow extends JDialog{
 					Admin operator=AdminService.admin;
 					String bz=tf_bz.getText().trim();
 					PayWay payWay=(PayWay) cbox_pay.getSelectedItem();
-					Supplier supplier=new Supplier();
-					 supplier=sdao.getSupplierInfoByContactorName(tf_name.getText()+"");
-					System.out.println(sdao.getSupplierInfoByContactorName(tf_name.getText()+""));
+					Supplier supplier=new CastUtil().VectorToSupplier(v);
+					
 					InOrder_tui in_order_tui=new InOrder_tui(dh, date, depot, wantMoney, payMoney, agent, operator, bz, payWay, supplier);
 					new InService().addOrder(in_order_tui,new CastUtil().VerctorToHashSet(data));
 					JOptionPane.showMessageDialog(null, "提交成功!");
-					BuyReturnGoodsModelWindow.this.setVisible(false);
-					new BuyReturnGoodsModelWindow();
+					
 				} catch (Exception e2) {
 					JOptionPane.showMessageDialog(null, "提交失败!");
 				}

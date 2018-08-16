@@ -574,10 +574,10 @@ public class CurrentAccountsModelWindow extends JDialog{
 			});
 			tf_p2_3.getDocument().addDocumentListener(new DocumentListener() {
 				public void removeUpdate(DocumentEvent e) {
-					data6=new CustomDao().getCustomAccount();
-					table6model=new DefaultTableModel(data6,columnNames6);
-					table6.setModel(table1model);
-					table6.updateUI();
+					data4=new  SellOrdersDao().getSellOrdersAccountAllByCustom(ret2);
+					table4model=new DefaultTableModel(data4,columnNames4);
+					table4.setModel(table4model);
+					table4.updateUI();
 				}
 				public void insertUpdate(DocumentEvent e) {}
 				public void changedUpdate(DocumentEvent e) {	
@@ -597,7 +597,7 @@ public class CurrentAccountsModelWindow extends JDialog{
 				public void mouseEntered(MouseEvent e) {}
 				public void mouseClicked(MouseEvent e) {
 					if(e.getButton()==1&&e.getClickCount()==2){
-						String str =data1.get(table1.getSelectedRow()).get(2).toString();
+						String str =data1.get(table1.getSelectedRow()).get(0).toString();
 						data2=new GoodsDao().getGoodsInToAccount(str);
 						table2model=new DefaultTableModel(data2,columnNames2);
 						table2.setModel(table2model);
