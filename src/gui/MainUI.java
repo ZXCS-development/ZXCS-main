@@ -28,7 +28,9 @@ import javax.swing.border.MatteBorder;
 import javax.swing.ImageIcon;
 
 public class MainUI extends JFrame{
-	
+	/**
+	 * aaa
+	 */
 	JPanel jp_content;
 	JPanel jp_north,jp_west,jp_center,jp_bottom;
 	JPanel jp_tabb;
