@@ -387,9 +387,9 @@ public class GoodsDao {
 						data.add(rs.getInt("id"));
 						data.add(rs.getString("g"));
 						data.add(rs.getString("u"));
-						data.add(rs.getFloat("sellPrice"));
+						data.add(rs.getDouble("sellPrice"));
 						data.add(rs.getString("num"));
-						data.add(Integer.parseInt(rs.getString("num"))*rs.getFloat("sellPrice"));
+						data.add(Integer.parseInt(rs.getString("num"))*rs.getDouble("sellPrice"));
 						data.add(rs.getString("norms"));
 						datas.add(data);
 					}
@@ -420,10 +420,10 @@ public class GoodsDao {
 						Vector data=new Vector();
 						data.add(rs.getInt("id"));
 						data.add(rs.getString("g"));
-						data.add(rs.getString("norms"));
+						data.add(rs.getString("u"));
 						data.add(rs.getString("num"));
 						data.add(Integer.parseInt(rs.getString("num"))*rs.getFloat("sellPrice"));
-						data.add(rs.getString("u"));
+						data.add(rs.getString("norms"));
 						data.add(rs.getString("bz"));
 						datas.add(data);
 					}
