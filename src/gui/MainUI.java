@@ -28,7 +28,7 @@ import javax.swing.border.MatteBorder;
 import javax.swing.ImageIcon;
 
 public class MainUI extends JFrame{
-	
+
 	JPanel jp_content;
 	JPanel jp_north,jp_west,jp_center,jp_bottom;
 	JPanel jp_tabb;
@@ -44,43 +44,43 @@ public class MainUI extends JFrame{
 	private JLabel lblNewLabel;
 	
 	public MainUI() {
-		setTitle("³¬ÊĞ¹ÜÀíÏµÍ³");
+		setTitle("è¶…å¸‚ç®¡ç†ç³»ç»Ÿ");
 		jp_content = new JPanel(new BorderLayout());
 		
-		//·şÎñ×¢²á
+		//æœåŠ¡æ³¨å†Œ
 		depotService = new DepotService();
 		adminService = new AdminService();
-		//¶¥²¿°´Å¥
+		//é¡¶éƒ¨æŒ‰é’®
 		jp_north = new JPanel();
-		jp_north.add(btn_today = new JButton("½ñÈÕÌáĞÑ"));
-		jp_north.add(btn_depots_search = new JButton("¿â´æ²éÑ¯"));
-		jp_north.add(btn_date = new JButton("ÈÕÆÚ²éÑ¯"));
+		jp_north.add(btn_today = new JButton("ä»Šæ—¥æé†’"));
+		jp_north.add(btn_depots_search = new JButton("åº“å­˜æŸ¥è¯¢"));
+		jp_north.add(btn_date = new JButton("æ—¥æœŸæŸ¥è¯¢"));
 		jp_content.add(jp_north,BorderLayout.NORTH);
-		//×ó²¿¹¦ÄÜ°´Å¥
+		//å·¦éƒ¨åŠŸèƒ½æŒ‰é’®
 //		jp_west = new JPanel(new GridLayout(6, 1));
-//		jp_west.add(btn_in = new JButton("½ø»õ¹ÜÀí"));
-//		jp_west.add(btn_sell = new JButton("ÏúÊÛ¹ÜÀí"));
-//		jp_west.add(btn_depots = new JButton("¿â´æ¹ÜÀí"));
-//		jp_west.add(btn_reports = new JButton("Í³¼Æ±¨±í"));
-//		jp_west.add(btn_system = new JButton("ÏµÍ³¹ÜÀí"));
-//		jp_west.add(new JLabel("³¬ÊĞ½øÏú¹ÜÀíÈí¼ş"));
+//		jp_west.add(btn_in = new JButton("è¿›è´§ç®¡ç†"));
+//		jp_west.add(btn_sell = new JButton("é”€å”®ç®¡ç†"));
+//		jp_west.add(btn_depots = new JButton("åº“å­˜ç®¡ç†"));
+//		jp_west.add(btn_reports = new JButton("ç»Ÿè®¡æŠ¥è¡¨"));
+//		jp_west.add(btn_system = new JButton("ç³»ç»Ÿç®¡ç†"));
+//		jp_west.add(new JLabel("è¶…å¸‚è¿›é”€ç®¡ç†è½¯ä»¶"));
 //		jp_content.add(jp_west,BorderLayout.WEST);
 
-		//Ñ¡Ïî¿¨°´Å¥
+		//é€‰é¡¹å¡æŒ‰é’®
 		jp_center = new JPanel(new GridLayout(1, 1));
 		tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
 		tabbedPane.setBorder(null);
 		tabbedPane.setBackground(Color.LIGHT_GRAY);
 		tabbedPane.setForeground(Color.WHITE);
-		tabbedPane.setFont(new Font("ºÚÌå", Font.PLAIN, 20));
-		tabbedPane.add("½ø»õ¹ÜÀí", new Index_InManagerUI());
-		tabbedPane.add("ÏúÊÛ¹ÜÀí", new Index_SellManager());
-		tabbedPane.add("¿â´æ¹ÜÀí", new Index_DepotsManagerUI());
-		tabbedPane.add("Í³¼Æ±¨±í", new Index_ReportsUI());
-		tabbedPane.add("ÏµÍ³¹ÜÀí", new Index_SystemManageUI());
+		tabbedPane.setFont(new Font("é»‘ä½“", Font.PLAIN, 20));
+		tabbedPane.add("è¿›è´§ç®¡ç†", new Index_InManagerUI());
+		tabbedPane.add("é”€å”®ç®¡ç†", new Index_SellManager());
+		tabbedPane.add("åº“å­˜ç®¡ç†", new Index_DepotsManagerUI());
+		tabbedPane.add("ç»Ÿè®¡æŠ¥è¡¨", new Index_ReportsUI());
+		tabbedPane.add("ç³»ç»Ÿç®¡ç†", new Index_SystemManageUI());
 		jp_center.add(tabbedPane);
 		jp_content.add(jp_center,BorderLayout.CENTER);
-		//ÄÏ²¿ÄÚÈİ
+		//å—éƒ¨å†…å®¹
 		jp_bottom = new JPanel();
 		jp_content.add(jp_bottom,BorderLayout.SOUTH);
 		
@@ -98,57 +98,57 @@ public class MainUI extends JFrame{
 		jp_bottom.add(tf_adminName = new JTextField(20));
 		jp_operator.add(tf_adminName);
 		tf_adminName.setEditable(false);
-		tf_adminName.setText("²Ù×÷Ô±£º"+adminService.admin.getName());
+		tf_adminName.setText("æ“ä½œå‘˜ï¼š"+adminService.admin.getName());
 		this.setBounds(200,100,800,480);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setVisible(true);
 		
 		/*
-		 * ¿â´æ²éÑ¯
+		 * åº“å­˜æŸ¥è¯¢
 		 */
 		btn_depots_search.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				/*
-				 * ĞèÒªÊı¾İ£º
-				 * 	ËùÓĞÉÌÆ·
+				 * éœ€è¦æ•°æ®ï¼š
+				 * 	æ‰€æœ‰å•†å“
 				 * 	...
 				 */
 
 				/*
-				 * Ìø×ª´°¿Ú£º
-				 * 	ÔöÌíÉÌÆ·´°¿Ú
+				 * è·³è½¬çª—å£ï¼š
+				 * 	å¢æ·»å•†å“çª—å£
 				 * 	...
 				 */
 			}
 		});
 		/*
-		 * ½ñÈÕÌáĞÑ
+		 * ä»Šæ—¥æé†’
 		 */
 		btn_today.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				/*
-				 * ĞèÒªÊı¾İ£º
-				 * 	ÊÇ·ñÒª²¹»õ
-				 * 		ÊÇ	µ÷È¡ĞèÒª²¹»õµÄ»õÎïÇåµ¥¡¢¸÷²Ö¿â¸Ã»õÎïµÄ¿â´æ
-				 * 		·ñ	½ñÈÕÌáĞÑ
+				 * éœ€è¦æ•°æ®ï¼š
+				 * 	æ˜¯å¦è¦è¡¥è´§
+				 * 		æ˜¯	è°ƒå–éœ€è¦è¡¥è´§çš„è´§ç‰©æ¸…å•ã€å„ä»“åº“è¯¥è´§ç‰©çš„åº“å­˜
+				 * 		å¦	ä»Šæ—¥æé†’
 				 */
 				ArrayList<Goods> alertGoods;
-				StringBuilder text = new StringBuilder();				//²âÊÔÓÃ×Ö·û´®£¬ºóÆÚ¸Ä½çÃæ
+				StringBuilder text = new StringBuilder();				//æµ‹è¯•ç”¨å­—ç¬¦ä¸²ï¼ŒåæœŸæ”¹ç•Œé¢
 				if((alertGoods=depotService.isAlert())!=null) {
-					new JOptionPane().showMessageDialog(MainUI.this, "¿â´æ¾¯±¨£¡");
+					new JOptionPane().showMessageDialog(MainUI.this, "åº“å­˜è­¦æŠ¥ï¼");
 					for(Goods g : alertGoods)
-						text.append(g.getId()+"£¬ÉÌÆ·Ãû£º"+g.getName()+"£¬¿â´æÊ£Óà£º"+g.getTempNum()+"£¬ĞèÒª²¹»õ£¡\n");
+						text.append(g.getId()+"ï¼Œå•†å“åï¼š"+g.getName()+"ï¼Œåº“å­˜å‰©ä½™ï¼š"+g.getTempNum()+"ï¼Œéœ€è¦è¡¥è´§ï¼\n");
 					new JOptionPane().showMessageDialog(MainUI.this, text.toString());
 				}
 				else
-					new JOptionPane().showMessageDialog(MainUI.this, "Ã»É¶¶«Î÷£¡");
+					new JOptionPane().showMessageDialog(MainUI.this, "æ²¡å•¥ä¸œè¥¿ï¼");
 				
 			}
 		});
 		/*
-		 * ÈÕÆÚ¿Ø¼ş²âÊÔ 
+		 * æ—¥æœŸæ§ä»¶æµ‹è¯• 
 		 */
 		btn_date.addActionListener(new ActionListener() {
 			@Override
@@ -169,7 +169,7 @@ public class MainUI extends JFrame{
 		
 	}
 	
-	//²âÊÔ
+	//æµ‹è¯•
 	public static void main(String[] args) {
 		new AdminService().Login("admin", "123");
 		new MainUI();
