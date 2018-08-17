@@ -2,3 +2,6 @@
 *.class
 *.class
 bin/gui/MainUI$2.class
+*.class
+*.class
+*.class
