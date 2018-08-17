@@ -542,64 +542,7 @@ public class GoodsDao {
 			}
 			return datas;
 		}
-		/**
-		 * 获取   盘点单据所有信息   
-		 * @return
-		 */
-		public Vector<Vector> getpdOrders(){
-			Vector<Vector> datas=new Vector<Vector>();
-			Vector data=null;
-			String sql="select * from PdOrders";
-			Connection conn=db.getConnection();
-			PreparedStatement pstat=null;
-			ResultSet rs=null;
-			try{
-				pstat=conn.prepareStatement(sql);					
-				rs=pstat.executeQuery();
-				while(rs.next()){
-					data=new Vector();
-					data.add(rs.getInt("id"));
-					data.add(rs.getString("odate"));
-					data.add(rs.getString("dname"));
-					data.add(rs.getString("operator"));						
-					data.add(rs.getString("bz"));
-					datas.add(data);
-				}
-			}catch(SQLException e){
-				e.printStackTrace();
-			}finally{
-				db.closeConnection(conn, pstat, rs);
-			}
-			return datas;
-		}
-		/**
-		 * 获取   盘点 商品详情所有信息   
-		 * @return
-		 */
-		public Vector<Vector> getpdOrdersDetails(){
-			Vector<Vector> datas=new Vector<Vector>();
-			Vector data=null;
-			String sql="select * from Pdordersdetails";
-			Connection conn=db.getConnection();
-			PreparedStatement pstat=null;
-			ResultSet rs=null;
-			try{
-				pstat=conn.prepareStatement(sql);					
-				rs=pstat.executeQuery();
-				while(rs.next()){
-					data=new Vector();
-					data.add(rs.getInt("id"));
-					data.add(rs.getString("time"));					
-					data.add(rs.getString("bz"));
-					datas.add(data);
-				}
-			}catch(SQLException e){
-				e.printStackTrace();
-			}finally{
-				db.closeConnection(conn, pstat, rs);
-			}
-			return datas;
-		}
+		
 		//获取   树那里的所有     商品所有产品信息  是  
 		public Vector<Vector> getGoods(){
 			Vector<Vector> datas=new Vector<Vector>();
@@ -723,6 +666,41 @@ public class GoodsDao {
 			db.closeConnection(conn, pstat, rs);
 		}
 		return datas;
+	}
+	/**
+	 * 通过调拨单ID获取调拨单
+	 * @return
+	 */
+	public Vector<Vector> getDbOrdersById(String id) {
+		Vector<Vector> ret = new Vector<>();
+		String sql = "select id,odate,d.name fromdepot,d2.name todepot,e.name agent,a.name operator,do.bz "
+				+ "from dbOrders do inner join depots d on d.did=do.fromdepot "
+				+ "inner join depots d2 on d2.did=do.todepot "
+				+ "inner join employees e on e.eid=do.agent "
+				+ "inner join admins a on a.aid=do.operator "
+				+ "where do.id like ?";
+		conn = db.getConnection();
+		try {
+			pstat = conn.prepareStatement(sql);
+			pstat.setString(1, "%"+id+"%");
+			rs = pstat.executeQuery();
+			while(rs.next()) {
+				Vector v = new Vector<>();
+				v.add(rs.getString("id"));
+				v.add(rs.getString("odate"));
+				v.add(rs.getString("fromdepot"));
+				v.add(rs.getString("todepot"));
+				v.add(rs.getString("agent"));
+				v.add(rs.getString("operator"));
+				v.add(rs.getString("bz"));
+				ret.add(v);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			db.closeConnection(conn, pstat, rs);
+		}
+		return ret;
 	}
 		
 	/**

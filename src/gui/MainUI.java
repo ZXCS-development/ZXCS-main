@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import bean.Goods;
+import gui.yc.StockCheckModelWindow;
 import service.AdminService;
 import service.DepotService;
 import javax.swing.JTabbedPane;
@@ -104,7 +105,7 @@ public class MainUI extends JFrame{
 		btn_depots_search.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-//				new 
+				new StockCheckModelWindow();
 				/*
 				 * 需要数据：
 				 * 	所有商品
