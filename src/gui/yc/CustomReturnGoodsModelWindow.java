@@ -5,13 +5,18 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.IOException;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDesktopPane;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -32,12 +37,15 @@ import bean.orders.SellOrder_tui;
 import dao.CustomDao;
 import dao.DepotsDao;
 import dao.EmployeesDao;
+import dao.GoodsDao;
 import dao.PayWaysDao;
 import dao.SellOrdersDao;
-
+import jxl.write.WriteException;
+import jxl.write.biff.RowsExceededException;
 import service.AdminService;
 import service.SellService;
 import util.CastUtil;
+import util.ImportExportHelp;
 import util.MyDateChooser;
 //顾客退货
 public class CustomReturnGoodsModelWindow extends JDialog{
@@ -73,11 +81,11 @@ public class CustomReturnGoodsModelWindow extends JDialog{
 	Vector columnNames1,columnNames2,columnNames3,columnNames4,columnNames5;
 	DefaultTableModel table1model,table2model,table3model,table4model,table5model;
 	JTable table1,table2,table3,table4,table5;
-	String[] arr1={"单据号","开单日期","客户名称","仓库名称","应收金额","实收金额","欠款金额","单据类型","经办人","操作员"};		
-	String[] arr2={"商品编号","商品名称","单位","单价","数量","总金额","规格型号","颜色"};
-	String[] arr3={"商品编号","商品名称","单位","销售数量","销售总金额","库存数量","规格型号","颜色","生产厂商"};
-	String[] arr4={"客户名称","单据号","开单日期","单位","单价","数量","总金额","规格型号","颜色"};
-	String[] arr5={"销售日期","单据号","商品编号","商品名称","单价","数量","总金额","利润","利润率","单位","规格型号","仓库","经办人","客户名称" };
+	String[] arr1={"单据号","开单日期","客户名称","仓库名称","应收金额","实收金额","欠款金额","经办人","操作员"};		
+	String[] arr2={"商品编号","商品名称","单位","单价","数量","总金额","规格型号"};
+	String[] arr3={"商品编号","商品名称","单位","销售数量","销售总金额","库存数量","规格型号"};
+	String[] arr4={"客户名称","单据号","开单日期","单位","单价","数量","总金额","规格型号"};
+	String[] arr5={"销售日期","单据号","商品编号","商品名称","单价","数量","总金额","单位","规格型号","仓库","经办人","客户名称" };
 	
 	
 	//生成订单所需数据
@@ -108,6 +116,7 @@ public class CustomReturnGoodsModelWindow extends JDialog{
 		lbl_ordernumber=new JLabel("单号:"+iddan);
 		jp_creturn_top_center=new JPanel();
 		tf_name=new JTextField(15);
+		tf_name.setEditable(false);
 		btn_seek=new JButton("查找");
 		aModel1Vector=new DepotsDao().getDepots();
 		aModel1=new DefaultComboBoxModel(aModel1Vector);
@@ -161,7 +170,6 @@ public class CustomReturnGoodsModelWindow extends JDialog{
 		columnNames.add("商品名称");
 		columnNames.add("单位");
 		columnNames.add("规格型号");
-		columnNames.add("颜色");
 		columnNames.add("单价");
 		columnNames.add("数量");
 		columnNames.add("总金额");
@@ -273,15 +281,40 @@ public class CustomReturnGoodsModelWindow extends JDialog{
 			columnNames5.add(str);
 		}
 		table1model=new DefaultTableModel(date1,columnNames1);
-		table1=new JTable(table1model);
+		table1=new JTable(table1model)
+		{
+			public boolean isCellEditable(int row,int clumn){
+				return false;
+			}
+		};
 		table2model=new DefaultTableModel(date2,columnNames2);
-		table2=new JTable(table2model);
+		table2=new JTable(table2model)
+		{
+			public boolean isCellEditable(int row,int clumn){
+				return false;
+			}
+		};
 		table3model=new DefaultTableModel(date3,columnNames3);
-		table3=new JTable(table3model);
+		table3=new JTable(table3model)
+		{
+			public boolean isCellEditable(int row,int clumn){
+				return false;
+			}
+		};
 		table4model=new DefaultTableModel(date4,columnNames4);
-		table4=new JTable(table4model);
+		table4=new JTable(table4model)
+		{
+			public boolean isCellEditable(int row,int clumn){
+				return false;
+			}
+		};
 		table5model=new DefaultTableModel(date5,columnNames5);
-		table5=new JTable(table5model);
+		table5=new JTable(table5model)
+		{
+			public boolean isCellEditable(int row,int clumn){
+				return false;
+			}
+		};
 		jp_rgc_center.setLayout(new GridLayout(1,1));
 		//单据选项卡
 		tabbed_center.add("单据表",jp_tab_p1);
@@ -316,7 +349,9 @@ public class CustomReturnGoodsModelWindow extends JDialog{
 	 * @author yc
 	 * 		 
 	 */
-		//查找seek
+		/**
+		 * 查找seek
+		 */
 		btn_seek.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				CustomInfoModelWindow cimw = new CustomInfoModelWindow();
@@ -334,7 +369,10 @@ public class CustomReturnGoodsModelWindow extends JDialog{
 				}
 			}
 		});
-		//添加退货商品
+		/**
+		 * 添加退货商品
+		 * 
+		 */
 		btn_addgoods.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				AddGoodsModelWindow agmw=new AddGoodsModelWindow("增加商品(销售退货)");
@@ -346,10 +384,8 @@ public class CustomReturnGoodsModelWindow extends JDialog{
 					data_1_1.add(2, data_1.get(2));
 					data_1_1.add(3, "");//规格
 					data_1_1.add(4, data_1.get(3));
-					data_1_1.add(5, data_1.get(4));
-					data_1_1.add(6, data_1.get(5));
-					data_1_1.add(7, data_1.get(6));
-					data_1_1.add(8, data_1.get(7));
+					data_1_1.add(5, data_1.get(6));
+					data_1_1.add(6, data_1.get(7));
 					data.add(data_1_1);
 					tf_wantmoney.setText(data_1.get(7).toString());
 					tf_paymoney.setText(data_1.get(7).toString());
@@ -360,15 +396,43 @@ public class CustomReturnGoodsModelWindow extends JDialog{
 				table.updateUI();
 			}
 		});
-		//整单退货
+		/**
+		 * 整单退货
+		 * 
+		 */
 		btn_returnall.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new SalesDocumentsCheckModelWindow();
+				SalesDocumentsCheckModelWindow sdcmw=new SalesDocumentsCheckModelWindow();
+				try {
+					Vector<Vector> d=sdcmw.date2;
+					for( Vector data_1:d){
+						Vector data_1_1=new Vector();
+						data_1_1.add(0, data_1.get(0));
+						data_1_1.add(1, data_1.get(1));
+						data_1_1.add(2, data_1.get(2));
+						data_1_1.add(3, "");//规格
+						data_1_1.add(4, data_1.get(3));
+						data_1_1.add(5, data_1.get(4));
+						data_1_1.add(6, data_1.get(5));
+						data.add(data_1_1);
+						tf_wantmoney.setText(data_1.get(5).toString());
+						tf_paymoney.setText(data_1.get(5).toString());
+				}
+
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+				tablemodel=new DefaultTableModel(data,columnNames);
+				table.setModel(tablemodel);
+				table.updateUI();
 			}
 		});
 		
 		
-		//退出
+		/**
+		 * 退出
+		 * 
+		 */
 		btn_exit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				CustomReturnGoodsModelWindow.this.setVisible(false);
@@ -379,7 +443,10 @@ public class CustomReturnGoodsModelWindow extends JDialog{
 				CustomReturnGoodsModelWindow.this.setVisible(false);
 			}
 		});
-		//确定形成单据
+		/**
+		 * 确定形成单据
+		 * 
+		 */
 		btn_ok.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -394,13 +461,146 @@ public class CustomReturnGoodsModelWindow extends JDialog{
 					PayWay payWay=(PayWay) CustomReturnGoodsModelWindow.this.cobx_pay.getSelectedItem();
 					Customer customer=CustomReturnGoodsModelWindow.this.ret;
 					SellOrder_tui sellorder=new SellOrder_tui(id, odate, depot, wantMoney, payMoney, agent, operator, bz, payWay, customer);
-					new  SellService().addOrder(sellorder, new CastUtil().vectorToGoods(data));
+					new  SellService().addOrder(sellorder, new CastUtil().vectorToGoods_tui(data));
 					JOptionPane.showMessageDialog(null, "添加退货单据成功!!!");
 					CustomReturnGoodsModelWindow.this.setVisible(false);
 				} catch (java.lang.NullPointerException e1) {
 					JOptionPane.showMessageDialog(null, "单据中没有业务不能保存");
 				}
 				
+				
+			}
+		});
+		
+		/**
+		 *查询键监听
+		 *退货查询
+		 *查单据表的相关信息
+		 *@author yc 
+		 */
+		btn_soc_check1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			if(table1.isShowing()) {
+				String str1=tf_rgc_name.getText();
+				String str2=tf_rgc_check.getText();
+				date1=new SellOrdersDao().getSellOrdersInfo(str1, str2);
+				table1model=new DefaultTableModel(date1,columnNames1);
+				table1.setModel(table1model);
+				table1.updateUI();
+			}else if(table3.isShowing()){
+				String str1=tf_rgc_name.getText();
+				String str2=tf_rgc_check.getText();
+				date3=new SellOrdersDao().getHuiZhongIngo(str1, str2);
+				table3model=new DefaultTableModel(date3,columnNames3);
+				table3.setModel(table3model);
+				table3.updateUI();
+			}else if(table5.isShowing()){
+				String str1=tf_rgc_name.getText();
+				String str2=tf_rgc_check.getText();
+				date5=new SellOrdersDao().getMingXiInfo(str1, str2);
+				table5model=new DefaultTableModel(date5,columnNames5);
+				table5.setModel(table5model);
+				table5.updateUI();
+			}
+			}
+		});
+		/**
+		 * 高级查询
+		 * @author yc
+		 */
+		btn_look.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			JOptionPane.showMessageDialog(null, "请选择条件点击查询！");	
+			}
+		});	
+		/**
+		 * 查询单据
+		 * @author yc
+		 */
+		btn_check.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(table1.isShowing()) {
+					date1=new SellOrdersDao().getSellOrdersInfo();
+					table1model=new DefaultTableModel(date1,columnNames1);
+					table1.setModel(table1model);
+					table1.updateUI();
+				}else if(table3.isShowing()) {
+					date3=new SellOrdersDao().getHuiZhongIngo();
+					table3model=new DefaultTableModel(date3,columnNames3);
+					table3.setModel(table3model);
+					table3.updateUI();
+				}else if(table5.isShowing()) {
+					date5=new SellOrdersDao().getMingXiInfo();
+					table5model=new DefaultTableModel(date5,columnNames5);
+					table5.setModel(table5model);
+					table5.updateUI();
+				}
+			}
+		});
+		/**
+		 *导出
+		 * @author yc
+		 */
+		btn_out.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					JFileChooser fchooser2=new JFileChooser();
+					fchooser2.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+					fchooser2.showSaveDialog(null);
+					String str=fchooser2.getSelectedFile().getAbsolutePath();
+					Vector<Vector> da=new Vector<Vector>();
+					da.add(columnNames1);
+					da.addAll(date1);
+					ImportExportHelp.ExportData(da, str);
+					JOptionPane.showMessageDialog(null, "导出成功！");
+				} catch (RowsExceededException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (WriteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}catch (Exception e2) {
+					// TODO: handle exception
+				}
+			}
+		});
+		
+		/**
+		 * 表格监听
+		 * 点击事件
+		 * @author yc
+		 */
+		table1.addMouseListener(new MouseListener() {
+			public void mouseReleased(MouseEvent e) {} 
+			public void mousePressed(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {}
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton()==1&&e.getClickCount()==2) {
+					String str=date1.get(table1.getSelectedRow()).get(0).toString();
+					date2=new GoodsDao().getGoodsInToAccount(str);
+					table2model=new DefaultTableModel(date2, columnNames2);
+					table2.setModel(table2model);
+					table2.updateUI();
+			}
+			}
+		});
+		table3.addMouseListener(new MouseListener() {
+			public void mouseReleased(MouseEvent e) {}
+			public void mousePressed(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {}
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton()==1&&e.getClickCount()==2) {
+					String str=date3.get(table3.getSelectedRow()).get(0).toString();
+					date4=new SellOrdersDao().getHuiZhongInfo(str);
+					table4model=new DefaultTableModel(date4, columnNames4);
+					table4.setModel(table4model);
+					table4.updateUI();
+			}
 			}
 		});
 		this.setTitle("顾客退货");

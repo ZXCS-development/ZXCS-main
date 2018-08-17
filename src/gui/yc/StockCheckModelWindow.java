@@ -22,20 +22,13 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import bean.Depot;
 import bean.GoodsType;
 
 import util.MyDateChooser;
 import util.TypeWindow;
 import dao.DepotsDao;
 import gui.TypeTreeModelWindow;
-import service.DepotService;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-/**
- * 当前库存查询
- *	公共
- */
+//当前库存查询
 public class StockCheckModelWindow extends JDialog{
 	MyDateChooser dc1,dc2;
 	JTabbedPane tabbed;
@@ -56,19 +49,12 @@ public class StockCheckModelWindow extends JDialog{
 	Vector<Vector> data1,data2,data3;
 	DefaultTableModel table1model,table2model,table3model;
 	JTable table1,table2,table3;
-	GoodsType goodsType;
-	String[] arr1={"商品编号","商品名称","条码","单位","库存量","销售总数","平均进价","平均售价","预设售价","库存总值","规格型号","备注  "};
+	String[] arr1={"商品编号","商品名称","条码","单位","库存量","预设售价","库存总值","规格型号","生产厂商","备注  "};
 	String[] arr2={"商品编号","商品名称","库存数量","进货数量","进货退货数量","进货合计数量","销售数量","销售退货数量","销售合计数量"};
 	String[] arr3={"商品编号","商品名称","进货价","销售价","单位","规格型号","生产厂商","备注"};
 	
-	//注册服务
-	DepotService depotService;
-	
 	
 	public StockCheckModelWindow(){	
-		
-		depotService = new DepotService();
-		
 		dc1=MyDateChooser.getInstance("yyyy-MM-dd");
 		dc2=MyDateChooser.getInstance("yyyy-MM-dd");
 		tabbed=new JTabbedPane();
@@ -91,32 +77,11 @@ public class StockCheckModelWindow extends JDialog{
 		btn_top_p1_4=new JButton("退货参考");
 		btn_top_p1_5=new JButton("导出");
 		btn_top_p1_6=new JButton("退出");
-		btn_top_p1_6.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				StockCheckModelWindow.this.setVisible(false);
-			}
-		});
 		btn_top_p1_7=new JButton("查询");
-		btn_top_p1_7.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Depot depot = (Depot) aModel1.getSelectedItem();	//可改成下拉框里直接放对象，不用model承载
-				Boolean useGoodsid = false;
-				if(cbox_2.isSelected())
-					useGoodsid=true;
-				String searchInfo=jf_p1_2.getText();
-				if(!jf_p1_1.getText().equals("仓库")) 
-					table1model = new DefaultTableModel(depotService.getDepotsChangeInfoByCondition(depot,goodsType,searchInfo, useGoodsid), columnNames1);
-				else
-					table1model = new DefaultTableModel(depotService.getDepotsChangeInfoByCondition(depot,null,searchInfo, useGoodsid), columnNames1);
-				table1.setModel(table1model);
-				table1.updateUI();
-			}
-		});
 		cbox_1=new JCheckBox("不显示库存为0的商品");
 		cbox_2=new JCheckBox("使用辅助条码查询商品");
 		
-		//功能添加
-		data1=depotService.getDepotsChangeInfo();
+		data1=new Vector<Vector>();
 		columnNames1=new Vector();
 		for(String str:arr1){
 			columnNames1.add(str);
@@ -136,7 +101,7 @@ public class StockCheckModelWindow extends JDialog{
 		jp_p1_top_p2.add(new JLabel("仓库:"));
 		jp_p1_top_p2.add(new JScrollPane(cobx_depots));
 		jp_p1_top_p2.add(new JLabel("商品类别:"));
-		jf_p1_1.setText("仓库");
+		jf_p1_1.setText("所有类别");
 		jf_p1_1.setEditable(false);
 		jp_p1_top_p2.add(jf_p1_1);
 		jp_p1_top_p2.add(new JLabel("商品编号或名称:"));
@@ -260,30 +225,16 @@ public class StockCheckModelWindow extends JDialog{
 						TypeTreeModelWindow ttmw=new TypeTreeModelWindow();
 						ttmw.setVisible(true);
 						jf_p1_1.setText(ttmw.type.getName());
-						goodsType = ttmw.type;
 					}
-				}
-			}
-		});
-		//不显示库存为0的商品
-		cbox_1.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(cbox_1.isSelected()) {
-					for(int i=0;i<data1.size();i++) {
-						if(table1model.getValueAt(i, 4).toString().trim().equals("0"))
-							table1model.removeRow(i);
-					}
-				}else {
-					btn_top_p1_7.doClick();
 				}
 			}
 		});
 		
+		
 		tabbed.add("库存变动情况",jp_p1);
 		tabbed.add("商品变动情况",jp_p2);
 		tabbed.add("商品信息查询",jp_p3);
-		getContentPane().add(tabbed);
+		this.add(tabbed);
 		this.setTitle("当前库存查询");	
 		this.setBounds(300, 100, 900, 550);
 		this.setLocationRelativeTo(null);

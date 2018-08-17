@@ -348,7 +348,6 @@ public class GoodSellModelWindow extends JDialog{
 			public void actionPerformed(ActionEvent e) {
 				AddGoodsModelWindow	agmw=new AddGoodsModelWindow("增加商品(商品销售)");
 				Vector<Vector> data3=agmw.data3;
-				
 				for( Vector data_1:data3){
 					Vector data_1_1=new Vector();
 					data_1_1.add(0, data_1.get(0));
@@ -364,7 +363,6 @@ public class GoodSellModelWindow extends JDialog{
 					tf_wantmoney.setText(data_1.get(7).toString());
 					tf_paymoney.setText(data_1.get(7).toString());
 					}
-				
 				tablemodel=new DefaultTableModel(data,columnNames);
 				table.setModel(tablemodel);
 				table.updateUI();
@@ -425,6 +423,7 @@ public class GoodSellModelWindow extends JDialog{
 		btn_ok.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {	
+					data.get(0);
 					String id=iddan;
 					String odate=GoodSellModelWindow.this.tf_selldate.getText().trim();
 					Double wantMoney=Double.parseDouble(GoodSellModelWindow.this.tf_wantmoney.getText().trim());
@@ -436,10 +435,10 @@ public class GoodSellModelWindow extends JDialog{
 					PayWay payWay=(PayWay) GoodSellModelWindow.this.cobx_pay.getSelectedItem();
 					Customer customer=GoodSellModelWindow.this.ret1;
 					SellOrder sellorder=new SellOrder(id, odate, depot, wantMoney, payMoney, agent, operator, bz, payWay, customer);
-					new  SellService().addOrder(sellorder, new CastUtil().vectorToGoods(data), true);
+					new  SellService().addOrder(sellorder, new CastUtil().vectorToGoods_sell(data), true);
 					JOptionPane.showMessageDialog(null, "添加销售单据成功!!!");
 					GoodSellModelWindow.this.setVisible(false);
-				} catch (java.lang.NullPointerException e1) {
+				} catch (Exception e1) {
 					JOptionPane.showMessageDialog(null, "单据中没有业务不能保存");
 				}
 				
