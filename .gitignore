@@ -4,4 +4,32 @@
 bin/gui/MainUI$2.class
 *.class
 *.class
+<<<<<<< HEAD
+=======
+bin/dao/InOrderDao.class
+bin/dao/SuppliersDao.class
+bin/gui/Index_InManagerUI$3.class
+bin/gui/lxh/BuyDocumentsCheckModelWindow$1.class
+bin/gui/lxh/BuyDocumentsCheckModelWindow$2.class
+bin/gui/lxh/BuyDocumentsCheckModelWindow$3.class
+bin/gui/lxh/BuyDocumentsCheckModelWindow$4.class
+bin/gui/lxh/BuyDocumentsCheckModelWindow$5.class
+bin/gui/lxh/BuyDocumentsCheckModelWindow$6.class
+bin/gui/lxh/BuyDocumentsCheckModelWindow$Table3Mouse.class
+bin/gui/lxh/BuyDocumentsCheckModelWindow$TableMouse.class
+bin/gui/lxh/BuyDocumentsCheckModelWindow.class
+bin/gui/lxh/BuyReturnGoodsModelWindow$1.class
+bin/gui/lxh/BuyReturnGoodsModelWindow$2.class
+bin/gui/lxh/BuyReturnGoodsModelWindow$3.class
+bin/gui/lxh/BuyReturnGoodsModelWindow$4.class
+bin/gui/lxh/BuyReturnGoodsModelWindow$5.class
+bin/gui/lxh/BuyReturnGoodsModelWindow.class
+bin/gui/MainUI$1.class
+bin/gui/MainUI$2.class
+bin/gui/MainUI$3.class
+bin/gui/MainUI.class
+bin/service/InService.class
+bin/util/DataBaseUtil.class
+*.class
+>>>>>>> 9bdfa1edfd56092ddc5f24acb2091bf6fc3ae92a
 *.class
