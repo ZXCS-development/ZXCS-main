@@ -16,16 +16,10 @@ import javax.swing.JTextField;
 import bean.Goods;
 import service.AdminService;
 import service.DepotService;
-import util.MyDateChooser;
-import javax.swing.JDesktopPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JToggleButton;
 import java.awt.Font;
 import java.awt.Color;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.MatteBorder;
-import javax.swing.ImageIcon;
+
 
 public class MainUI extends JFrame{
 	
@@ -43,6 +37,7 @@ public class MainUI extends JFrame{
 	private JPanel jp_mess;
 	private JLabel lblNewLabel;
 	
+	
 	public MainUI() {
 		setTitle("超市管理系统");
 		jp_content = new JPanel(new BorderLayout());
@@ -53,7 +48,7 @@ public class MainUI extends JFrame{
 		//顶部按钮
 		jp_north = new JPanel();
 		jp_north.add(btn_today = new JButton("今日提醒"));
-		jp_north.add(btn_depots_search = new JButton("库存查询"));
+		jp_north.add(btn_depots_search = new JButton("\u5E93\u5B58\u67E5\u8BE2"));
 		jp_north.add(btn_date = new JButton("日期查询"));
 		jp_content.add(jp_north,BorderLayout.NORTH);
 		//左部功能按钮
@@ -71,7 +66,7 @@ public class MainUI extends JFrame{
 		tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
 		tabbedPane.setBorder(null);
 		tabbedPane.setBackground(Color.LIGHT_GRAY);
-		tabbedPane.setForeground(Color.WHITE);
+		tabbedPane.setForeground(Color.DARK_GRAY);
 		tabbedPane.setFont(new Font("黑体", Font.PLAIN, 20));
 		tabbedPane.add("进货管理", new Index_InManagerUI());
 		tabbedPane.add("销售管理", new Index_SellManager());
@@ -109,6 +104,7 @@ public class MainUI extends JFrame{
 		btn_depots_search.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+//				new 
 				/*
 				 * 需要数据：
 				 * 	所有商品

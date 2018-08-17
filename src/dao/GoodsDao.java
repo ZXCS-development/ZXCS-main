@@ -50,7 +50,6 @@ public class GoodsDao {
 				g.setName(rs.getString("name"));
 				g.setTempNum(rs.getInt("now"));
 				ret.add(g);
-				System.out.println(g);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -620,7 +619,7 @@ public class GoodsDao {
 					data.add(rs.getString("type"));
 					data.add(rs.getInt("goodsid"));
 					data.add(rs.getInt("unit"));
-					data.add(rs.getInt("norms"));
+					data.add(rs.getString("norms"));
 					data.add(rs.getString("badDate"));
 					data.add(rs.getInt("inPrice"));
 					data.add(rs.getInt("sellPrice"));

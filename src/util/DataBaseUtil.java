@@ -8,9 +8,9 @@ import java.sql.Statement;
 import java.sql.ResultSet;
 
 /**
- * æ•°æ®åº“å·¥å…·ç±» æä¾›ä¸¤ä¸ªæ–¹æ³•ï¼š
- * 	1ã€getConnection() 		è¿”å›è¿æ¥å¯¹è±¡
- * 	2ã€closeConnection(...) 	å…³é—­æ•°æ®åº“è¿æ¥å¯¹è±¡
+ * Êı¾İ¿â¹¤¾ßÀà Ìá¹©Á½¸ö·½·¨£º
+ * 	1¡¢getConnection() 		·µ»ØÁ¬½Ó¶ÔÏó
+ * 	2¡¢closeConnection(...) 	¹Ø±ÕÊı¾İ¿âÁ¬½Ó¶ÔÏó
  */
 public class DataBaseUtil {
   //String url="jdbc:oracle:thin:@localhost:1521:orcl";
@@ -32,7 +32,7 @@ public class DataBaseUtil {
 	public static void main(String[] args) {
 		System.out.println(new DataBaseUtil().getConnection());
 	}
-	//è·å¾—è¿æ¥å¯¹è±¡
+	//»ñµÃÁ¬½Ó¶ÔÏó
 	public Connection getConnection(){
 		try{
 			return DriverManager.getConnection(url, user, password);
@@ -41,7 +41,7 @@ public class DataBaseUtil {
 		}
 		return null;
 	}
-	//å…³é—­ç›¸å…³å¯¹è±¡
+	//¹Ø±ÕÏà¹Ø¶ÔÏó
 	public void closeConnection(Connection conn, PreparedStatement pstat){
 		closeDBObject(conn);
 		closeDBObject(pstat);
