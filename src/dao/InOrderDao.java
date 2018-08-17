@@ -109,14 +109,12 @@ public class InOrderDao {
 	 */
 	public Vector<Vector> getAlwaysInorder(String id) {
 		Vector<Vector> datas=new Vector<Vector>();
-		String sql ="select g.id,g.name gname,g.inprice,u.name uname,i.num,ino.wantmoney,s.name sname," +
+		String sql ="select g.id,g.name gname,g.inprice,u.name uname,i.num,ino.wantmoney," +
 				"gs.count,g.norms,g.bz from goods g "+ 
 		          "join  inordersdetails i on g.id=i.gid  "+ 
 		          "join units u on g.unit=u.unid "+ 
 		          "join goodsstore gs on g.id=gs.gid  "+ 
-		          "join inOrders ino on i.oid=ino.id  "+
-		          "join suppliers s on s.sid=ino.supplier "+
-		          "where ino.id=?";
+		          "join inOrders ino on i.oid=ino.id where ino.id=?";
 		conn = db.getConnection();
 		try {
 			pstat = conn.prepareStatement(sql);
@@ -133,7 +131,6 @@ public class InOrderDao {
 				data.add(rs.getDouble("count"));
 				data.add(rs.getString("norms"));
 				data.add(rs.getString("bz"));
-				data.add(rs.getString("sname"));
 				datas.add(data);
 			}
 		} catch (SQLException e) {

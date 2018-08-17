@@ -247,29 +247,29 @@ public class GoodsDao {
 		//获取所有商品清单信息通过id和name
 		public Vector<Vector> getAllGoodsByIdName(String str){
 			Vector<Vector> datas=new Vector<Vector>();
-				String sql="select g.id,g.name gname,u.name uname,g.norms,g.inprice,s.now,g.sellprice" +
-						"from goods g inner join units u on u.unid = g.unit" +
-						"inner join( select gid,sum(count) as now from goods g " +
-						"inner join goodsStore d on g.id = d.gid GROUP BY GID )s on s.gid = g.id"; 
+			String sql="select g.id,g.name gname,u.name uname,g.norms,g.inprice,s.now,g.sellprice " +
+					"from goods g inner join units u on u.unid = g.unit " +
+					"inner join( select gid,sum(count) as now from goods g " +
+					"inner join goodsStore d on g.id = d.gid GROUP BY GID)s on s.gid = g.id where g.id like ? or g.name like ?"; 
 
-				conn=db.getConnection();
-				try {
-					pstat=conn.prepareStatement(sql);
-					//pstat.setString(1, "%"+str+"%");
-					//pstat.setString(2, "%"+str+"%");
-					rs=pstat.executeQuery();
-					while(rs.next()){
-						Vector data=new Vector();
-						data.add(rs.getInt("id"));
-						data.add(rs.getString("gname"));
-						data.add(rs.getString("uname"));
-						data.add(rs.getString("norms"));
-						data.add(null);
-						data.add(rs.getFloat("sellPrice"));
-						data.add(rs.getInt("now"));
-						datas.add(data);
-					}
-					
+			conn=db.getConnection();
+			try {
+				pstat=conn.prepareStatement(sql);
+				pstat.setString(1, "%"+str+"%");
+				pstat.setString(2, "%"+str+"%");
+				rs=pstat.executeQuery();
+				while(rs.next()){
+					Vector data=new Vector();
+					data.add(rs.getInt("id"));
+					data.add(rs.getString("gname"));
+					data.add(rs.getString("uname"));
+					data.add(rs.getString("norms"));
+					data.add(null);
+					data.add(rs.getFloat("sellPrice"));
+					data.add(rs.getInt("now"));
+					datas.add(data);
+				}
+				
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -284,11 +284,12 @@ public class GoodsDao {
 		 */
 		public Vector<Vector> getAllGoodsByCount(){
 			Vector<Vector> datas=new Vector<Vector>();
-				String sql="select g.id,g.name gname,u.name uname,g.norms,g.inprice,s.now,g.sellprice " +
-						"from goods g inner join units u on u.unid = g.unit " +
-						"inner join( select gid,sum(count) as now from goods g " +
-						"inner join goodsStore d on g.id = d.gid GROUP BY GID)s on s.gid = g.id " +
-						"inner join sellordersdetails sell on sell.gid=g.id order by sell.num desc"; 
+				String sql="select g.id,g.name gname,u.name uname,g.norms,g.inprice,s.now,g.sellprice "+
+			            "from goods g inner join units u on u.unid = g.unit "+ 
+			            "inner join( select gid,sum(count) as now from goods g "+
+			            "inner join goodsStore d on g.id = d.gid GROUP BY GID)s on s.gid = g.id "+
+			            "inner join (select gid,sum(num) ret from  sellordersdetails GROUP BY gid)r on r.gid=g.id "+
+			            "order by r.ret desc"; 
 
 				conn=db.getConnection();
 				try {
@@ -407,11 +408,12 @@ public class GoodsDao {
 		 * 往来账务
 		 * @author admin
 		 */
-		public Vector<Vector> getGoodsInToAccount(){
+		public Vector<Vector> getGoodsInToAccount(String str1,String str2){
 			Vector<Vector> datas=new Vector<Vector>();
 				String sql="select g.id,g.name g,u.name u,g.sellprice,sell.num,g.norms,g.bz from goods g " +
 						"join sellordersdetails sell on sell.gid=g.id "+ 
-						"join units u on u.unid=g.unit";
+						"join sellorders s on s.id=sell.oid "+ 
+						"join units u on u.unid=g.unit where s.odate between to_date('"+str1+"','yyyy-mm-dd') and to_date('"+str2+"','yyyy-mm-dd')";
 				conn=db.getConnection();
 				try {
 					pstat=conn.prepareStatement(sql);

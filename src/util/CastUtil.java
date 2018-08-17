@@ -9,6 +9,7 @@ import bean.Customer;
 import bean.Depot;
 import bean.Employee;
 import bean.Goods;
+import bean.PayWay;
 import bean.Supplier;
 import bean.orders.DbOrder;
 
@@ -90,16 +91,28 @@ public class CastUtil {
 	 * @param sellgoods
 	 * @return
 	 */
-	public HashSet<Goods> vectorToGoods(Vector<Vector> sellgoods){
-		HashSet<Goods> ret = new HashSet<Goods>();
-		for(Vector c : sellgoods){
-			Goods g=new Goods();
-			g.setId(Integer.parseInt(c.get(0).toString()));
-			g.setTempNum(Integer.parseInt(c.get(3).toString()));//数量
-			ret.add(g);
+		public HashSet<Goods> vectorToGoods_sell(Vector<Vector> sellgoods){
+			HashSet<Goods> ret = new HashSet<Goods>();
+			for(Vector c : sellgoods){
+				Goods g=new Goods();
+				g.setId(Integer.parseInt(c.get(0).toString()));
+				g.setSellPrice(Double.parseDouble(c.get(4).toString()));//设置当前的单价
+				g.setTempNum(Integer.parseInt(c.get(7).toString()));//数量
+				ret.add(g);
+			}
+			return ret;
 		}
-		return ret;
-	}
+		public HashSet<Goods> vectorToGoods_tui(Vector<Vector> sellgoods){
+			HashSet<Goods> ret = new HashSet<Goods>();
+			for(Vector c : sellgoods){
+				Goods g=new Goods();
+				g.setId(Integer.parseInt(c.get(0).toString()));
+				g.setSellPrice(Double.parseDouble(c.get(4).toString()));//设置当前的单价
+				g.setTempNum(Integer.parseInt(c.get(5).toString()));//数量
+				ret.add(g);
+			}
+			return ret;
+		}
 	/**
 	 * vector对象转custom
 	 * @param customer
@@ -111,6 +124,56 @@ public class CastUtil {
 		ret.setCid(Integer.parseInt(customer.get(0).toString()));
 		ret.setName(customer.get(1).toString());
 		ret.setContact(customer.get(2).toString());	
+		return ret;
+	}
+	/**
+	 * object对象转Depot
+	 * @param Depot
+	 * @return yc
+	 */
+	public Depot objectToDepot(Object depot){
+		Depot ret = new Depot();
+		ret.setName(depot.toString());
+		return ret;
+	}
+	/**
+	 * object对象转Employee
+	 * @param Depot
+	 * @return yc
+	 */
+	public Employee objectToEmployee(Object employee){
+		Employee ret = new Employee();
+		ret.setName(employee.toString());
+		return ret;
+	}
+	/**
+	 * object对象转payWay
+	 * @param payWay
+	 * @return yc
+	 */
+	public PayWay objectToPayWay(Object payWay){
+		PayWay ret = new PayWay();
+		ret.setName(payWay.toString());
+		return ret;
+	}
+	/**
+	 * object对象转custom
+	 * @param payWay
+	 * @return yc
+	 */
+	public Customer objectToCustomer(Object customer){
+		Customer ret = new Customer();
+		ret.setName(customer.toString());
+		return ret;
+	}
+	/**
+	 * object对象转admin
+	 * @param admin
+	 * @return yc
+	 */
+	public Admin objectToAdmin(Object admin){
+		Admin ret = new Admin();
+		ret.setName(admin.toString());
 		return ret;
 	}
 	/**
@@ -131,6 +194,16 @@ public class CastUtil {
 			item.add(o.getName());
 			item.add(o.getPhone());			
 			ret.add(item);
+		}
+		return ret;
+	}
+	public HashSet<Goods> vectorToGoods(Vector<Vector> sellgoods){
+		HashSet<Goods> ret = new HashSet<Goods>();
+		for(Vector c : sellgoods){
+			Goods g=new Goods();
+			g.setId(Integer.parseInt(c.get(0).toString()));
+			g.setTempNum(Integer.parseInt(c.get(3).toString()));//数量
+			ret.add(g);
 		}
 		return ret;
 	}
