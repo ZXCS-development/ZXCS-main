@@ -386,7 +386,11 @@ public class GoodSellModelWindow extends JDialog{
 		//导入
 		mitem_in.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new ImportExportHelp();
+				ImportExportHelp ieh=new ImportExportHelp();
+				Vector<Vector> v=ieh.TransExcelToVector(ieh.getImportFile());
+				tablemodel=new DefaultTableModel(v,columnNames);
+				table.setModel(tablemodel);
+				table.updateUI();
 			}
 		});
 		//导出

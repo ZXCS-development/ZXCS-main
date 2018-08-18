@@ -317,6 +317,11 @@ public class ImportExportHelp extends JDialog{
 		if(fis!=null)
 			fis.close();
 	}
+
+	public File getImportFile() {
+		return importFile;
+	}
+	
 }
 class Second extends JPanel{
 	public Second(Vector data, Vector columnNames) {
@@ -357,5 +362,6 @@ class ExcelFileFilter extends FileFilter {
     public boolean accept(File file) {    
         String name = file.getName();    
         return file.isDirectory() || name.toLowerCase().endsWith(".xls") || name.toLowerCase().endsWith(".xlsx");  // 仅显示目录和xls、xlsx文件  
-    }    
+    }
+  
 }

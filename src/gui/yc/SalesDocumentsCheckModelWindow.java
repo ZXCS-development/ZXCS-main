@@ -327,7 +327,7 @@ public class SalesDocumentsCheckModelWindow extends JDialog{
 			public void mouseEntered(MouseEvent e) {}
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton()==1&&e.getClickCount()==2) {
-					String str=date1.get(table1.getSelectedRow()).get(0).toString();
+					String str=date1.get(table1.getSelectedRow()).get(2).toString();
 					date2=new GoodsDao().getGoodsInToAccount(str);
 					table2model=new DefaultTableModel(date2, columnNames2);
 					table2.setModel(table2model);
